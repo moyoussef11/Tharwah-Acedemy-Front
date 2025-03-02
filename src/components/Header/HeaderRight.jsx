@@ -122,7 +122,7 @@ const HeaderRight = ({ toggle, setToggle }) => {
             </div>
             <div className="flex flex-col gap-4">
               <h5 className="text-[#143A53]">اختر الفئة</h5>
-              <div className="categories grid grid-cols-3 gap-[14px]">
+              <div className="categories grid grid-cols-2 md:grid-cols-3 gap-[14px]">
                 {categories && categories.length > 0 ? (
                   categories.map((item) => (
                     <div
