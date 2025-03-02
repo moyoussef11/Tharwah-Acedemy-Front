@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Articles from "./components/Dashboard/Articles/Articles";
 import AddArticles from "./components/Dashboard/Articles/AddArticles";
 import Questions from "./components/Dashboard/Questions/Questions";
-import AddQuestions from "./components/Dashboard/Questions/AddQuestions.JSX";
+// import AddQuestions from "./components/Dashboard/Questions/AddQuestions.JSX";
 import Library from "./components/Dashboard/Library/Library";
 import AddLibrary from "./components/Dashboard/Library/AddLibrary";
 import Categories from "./components/Dashboard/Categories/Categories";
@@ -22,6 +22,7 @@ import ArticlesPage from "./pages/Articles";
 import Libraries from "./pages/Libraries";
 import ArticleDetalis from "./pages/ArticleDetalis";
 import Error404 from "./pages/Error404";
+import AddQuestion from "./components/Dashboard/Questions/AddQuestion";
 
 function App() {
   const location = useLocation();
@@ -57,7 +58,7 @@ function App() {
             <Route path="articles" element={<Articles />} />
             <Route path="articles/add-article" element={<AddArticles />} />
             <Route path="questions" element={<Questions />} />
-            <Route path="questions/add-questions" element={<AddQuestions />} />
+            <Route path="questions/add-questions" element={<AddQuestion />} />
             <Route path="library" element={<Library />} />
             <Route path="library/add-library" element={<AddLibrary />} />
             <Route path="categories" element={<Categories />} />

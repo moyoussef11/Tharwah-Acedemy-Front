@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { fetchQuestions } from "../../../rtk/features/questions/actGetQuestions";
 
-const AddQuestions = () => {
+const AddQuestion = () => {
   const tagsState = useSelector((state) => state.tags);
   const categoriesState = useSelector((state) => state.categories);
   const subCategoriesState = useSelector((state) => state.sub_category);
@@ -167,4 +167,4 @@ const AddQuestions = () => {
   );
 };
 
-export default AddQuestions;
+export default AddQuestion;
