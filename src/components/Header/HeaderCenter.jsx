@@ -26,6 +26,23 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               </span>
             </Link>
           </li>
+          {/*  */}
+          <li className="p-[12px]">
+            {" "}
+            <Link className="flex items-center gap-1" to="/admin-dashboard">
+              <img src={icon2} alt="icons" />
+              <span
+                className={`text-[#A3A8B5]  ${
+                  location === "admin-dashboard"
+                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
+                    : ""
+                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
+              >
+                admin dashboard
+              </span>
+            </Link>
+          </li>
+          {/*  */}
           <li className="p-[12px]">
             {" "}
             <Link className="flex items-center gap-1" to="/articles">
@@ -114,6 +131,28 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               </span>
             </Link>
           </li>
+
+          {/*  */}
+          <li className="p-[12px]">
+            {" "}
+            <Link
+              onClick={() => setToggle(false)}
+              className="flex items-center gap-1"
+              to="/admin-dashboard"
+            >
+              <img src={icon2} alt="icons" />
+              <span
+                className={`text-[#A3A8B5]  ${
+                  location === "admin-dashboard"
+                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
+                    : ""
+                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
+              >
+                admin dashboard
+              </span>
+            </Link>
+          </li>
+          {/*  */}
           <li className="p-[12px]">
             <Link
               onClick={() => setToggle(false)}
