@@ -22,6 +22,7 @@ const ArticlesPage = () => {
     setShowSub,
     articles,
     finalDataArticles,
+    searchRef,
   } = useArticles();
 
   return (
@@ -34,7 +35,7 @@ const ArticlesPage = () => {
           <h2 className="text-[32px] font-bold leading-[35.2px] tracking-[0.64px] text-[#0C111D]">
             المقالات
           </h2>
-          <form>
+          <form ref={searchRef}>
             <div className="bg-[#FFFFFF] relative sm:w-[550px] border border-[#FD9708] rounded-[12px] py-[8px] pr-[8px] pl-[16px] flex items-center">
               <input
                 type="text"

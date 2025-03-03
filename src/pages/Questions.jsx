@@ -22,7 +22,9 @@ const QuestionsPage = () => {
     showSub,
     setShowSub,
     dataQuestions,
+    searchRef,
   } = useQuestions();
+
 
   return (
     <>
@@ -39,7 +41,7 @@ const QuestionsPage = () => {
             هذه هي الأسئلة الأكثر شيوعًا. لا تستطيع العثور على ما تبحث عنه؟ أضف
             سؤالك
           </p>
-          <form>
+          <form ref={searchRef}>
             <div className="bg-[#FFFFFF] relative sm:w-[650px] border border-[#FD9708] rounded-[12px] py-[8px] pr-[8px] pl-[16px] flex items-center">
               <input
                 type="text"

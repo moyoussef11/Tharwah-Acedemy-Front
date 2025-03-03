@@ -1,6 +1,6 @@
 import { message } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ARTICLES, BASEURL, QUESTIONS } from "../utils/api";
 import {
@@ -31,7 +31,7 @@ const useHome = () => {
   const [filteredDataArticles, setFilteredDataArticles] = useState([]);
   const [questionsViewsOver, setQuestionsViewsOver] = useState([]);
   const [articlesViewsOver, setArticlesViewsOver] = useState([]);
-
+  const searchRef = useRef(null);
   const { questions, questionsLatest } = questionsState;
   const { categories } = categoryState;
   const { articles, articlesLatest } = articlesState;
@@ -65,6 +65,19 @@ const useHome = () => {
       message.error(error?.message);
     }
   }
+
+  useEffect(() => {
+    function handleHideResult(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchValue("");
+        setSearchValueArticle("");
+      }
+    }
+
+    window.addEventListener("mousedown", handleHideResult);
+
+    return () => removeEventListener("mousedown", handleHideResult);
+  }, []);
 
   useEffect(() => {
     if (!searchValue) {
@@ -138,6 +151,7 @@ const useHome = () => {
     loadingQuestions,
     loadingArticles,
     loadingCategories,
+    searchRef,
   };
 };
 

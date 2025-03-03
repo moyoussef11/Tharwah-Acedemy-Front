@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCategories,
@@ -26,7 +26,19 @@ const useQuestions = () => {
   const { questions } = questionsState;
   const [subCat, setSubCat] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState("");
+  const searchRef = useRef(null);
 
+  useEffect(() => {
+    function handleHideResult(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchValue("");
+      }
+    }
+
+    window.addEventListener("mousedown", handleHideResult);
+
+    return () => removeEventListener("mousedown", handleHideResult);
+  }, []);
   useEffect(() => {
     if (categories.length > 0) {
       setCatSlug(categories[0]?.slug);
@@ -128,6 +140,7 @@ const useQuestions = () => {
     showSub,
     setShowSub,
     dataQuestions,
+    searchRef,
   };
 };
 

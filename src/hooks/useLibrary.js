@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASEURL, LIBRARY } from "../utils/api";
 import { message } from "antd";
@@ -12,6 +12,7 @@ const useLibrary = () => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [selected, setSelected] = useState("all");
+  const searchRef = useRef(null);
 
   async function searchQuestionByName() {
     try {
@@ -41,6 +42,19 @@ const useLibrary = () => {
     dispatch(fetchLibrary());
   }, [dispatch]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchValue("");
+      }
+    };
+
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const options = [
     { id: "all", label: "الجميع" },
     { id: "video", label: "الفيديوهات" },
@@ -62,6 +76,7 @@ const useLibrary = () => {
     options,
     setSelected,
     selected,
+    searchRef,
   };
 };
 

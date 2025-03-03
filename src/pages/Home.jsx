@@ -31,10 +31,10 @@ export const Home = () => {
     articles,
     articlesLatest,
     articlesViewsOver,
-
     loadingQuestions,
     loadingArticles,
     loadingCategories,
+    searchRef,
   } = useHome();
 
   return (
@@ -113,7 +113,7 @@ export const Home = () => {
               </div>
             </div>
             {mode === "questions" ? (
-              <form>
+              <form ref={searchRef}>
                 <div className="bg-[#FFFFFF] relative sm:w-[550px] border border-[#FD9708] rounded-[12px] py-[8px] pr-[8px] pl-[16px] flex items-center">
                   <input
                     type="text"
@@ -145,7 +145,7 @@ export const Home = () => {
                 </div>
               </form>
             ) : (
-              <form>
+              <form ref={searchRef}>
                 <div className="bg-[#FFFFFF] relative sm:w-[550px] border border-[#FD9708] rounded-[12px] py-[8px] pr-[8px] pl-[16px] flex items-center">
                   <input
                     type="text"

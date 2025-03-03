@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import braedCrumb from "../assets/braedCamp.png";
+import braedCrumbArrow from "../assets/chevron-right.png";
 import share from "../assets/ion_share-outline.svg";
 import exportIcon from "../assets/export.svg";
 import ellipseIcon from "../assets/Ellipse 341.png";
@@ -18,6 +18,16 @@ const ArticleDetalis = () => {
         <div>
           <div className="head w-full flex flex-col-reverse gap-5 md:flex-row items-center justify-between">
             <div className="text-[#191A1B] flex items-center gap-[12px]">
+              <span className="text-[14px] text-[#191A1B] leading-[20px] opacity-60">
+                الرئيسية
+              </span>
+              <Link to={"/"}>
+                <img
+                  className="rotate-180 w-[12px] h-[12px] opacity-60 text-[#191A1B]"
+                  src={braedCrumbArrow}
+                  alt="braedCrumb"
+                />
+              </Link>
               <h4 className="text-[14px]">
                 {article && Object.keys(article).length > 0 ? (
                   article.title
@@ -25,17 +35,13 @@ const ArticleDetalis = () => {
                   <Skeleton active paragraph={false} title={{ width: 100 }} />
                 )}
               </h4>
-              <Link to={"/"}>
-                <img src={braedCrumb} alt="braedCrumb" />
-              </Link>
             </div>
             <div className="btns flex items-center gap-[8px]">
               <button
-                // onClick={exportToPDF}
                 onClick={() => window.print()}
                 className="py-[10px] px-[12px] gap-[8px] rounded-[8px] bg-[#143A53] border border-[#143A53] cursor-pointer flex items-center"
               >
-                <span className="font-medium  text-white">تصدير</span>
+                <span className="font-medium text-white">طباعه</span>
                 <img src={exportIcon} alt="icon" />
               </button>
 
@@ -72,7 +78,7 @@ const ArticleDetalis = () => {
                 <Skeleton active paragraph={false} title={{ width: 100 }} />
               )}
               <div>
-                <h2 className="text-3xl text-center md:text-start lg:text-[52px] font-bold text-[#212326] w-full leading-[62.4px] tracking-[-1.56px]">
+                <h2 className="text-3xl text-center mb-[13px] md:mb-[40px] md:text-start lg:text-[52px] font-bold text-[#212326] w-full leading-[62.4px] tracking-[-1.56px]">
                   {article.title}
                 </h2>
                 <img

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ARTICLES, BASEURL } from "../utils/api";
 import { message } from "antd";
@@ -22,6 +22,7 @@ const useArticles = () => {
   const [indexIdSubCat, setIndexIdSubCat] = useState(0);
   const [catId, setCatId] = useState("");
   const [subId, setSubId] = useState("");
+  const searchRef = useRef(null);
 
   async function searchArticlesByName() {
     try {
@@ -63,6 +64,18 @@ const useArticles = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    function handleHideResult(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchValueArticle("");
+      }
+    }
+
+    window.addEventListener("mousedown", handleHideResult);
+
+    return () => removeEventListener("mousedown", handleHideResult);
+  }, []);
+
+  useEffect(() => {
     if (indexId) {
       setIndexIdSubCat(0);
     }
@@ -84,6 +97,7 @@ const useArticles = () => {
     setShowSub,
     articles,
     finalDataArticles,
+    searchRef,
   };
 };
 

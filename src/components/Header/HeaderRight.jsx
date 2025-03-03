@@ -31,7 +31,12 @@ const HeaderRight = ({ toggle, setToggle }) => {
 
   async function sendQuestion(e) {
     e.preventDefault();
-
+    if (!question) {
+      return message.error("please enter your question");
+    }
+    if (!category) {
+      return message.error("please enter your category");
+    }
     try {
       const res = await axios.post(
         `${BASEURL}/${QUESTIONS}/send-new-question`,
@@ -157,7 +162,12 @@ const HeaderRight = ({ toggle, setToggle }) => {
                 إرسال
               </button>
               <button
-                onClick={() => setOpen(false)}
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  setQuestion("");
+                  setCategory("");
+                }}
                 className="rounded-[8px] cursor-pointer border border-[#D9DAE0] flex items-center gap-[8px] py-[10px] px-[12px]"
               >
                 إلغاء

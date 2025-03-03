@@ -14,7 +14,11 @@ const Libraries = () => {
     options,
     setSelected,
     selected,
+    searchRef,
   } = useLibrary();
+
+
+
   return (
     <>
       {" "}
@@ -26,7 +30,7 @@ const Libraries = () => {
           <h2 className="text-[32px] font-bold leading-[35.2px] tracking-[0.64px] text-[#0C111D]">
             المكتبة
           </h2>
-          <form>
+          <form ref={searchRef} className="">
             <div className="bg-[#FFFFFF] relative sm:w-[550px] border border-[#FD9708] rounded-[12px] py-[8px] pr-[8px] pl-[16px] flex items-center">
               <input
                 type="text"
@@ -46,7 +50,10 @@ const Libraries = () => {
                     filteredData.map((item) => {
                       if (item.type === "image") {
                         return (
-                          <div
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             key={item.url}
                             className="library rounded-[8px] border border-[#E4E7EC] p-[12px] flex flex-row justify-between items-center gap-[16px]"
                           >
@@ -61,7 +68,7 @@ const Libraries = () => {
                             <span className="text-[12px] font-[400] text-[#505F75] leading-[15px] tracking-[-0.36px]">
                               {item.createdAt.split("T")[0]}
                             </span>
-                          </div>
+                          </a>
                         );
                       } else if (item.type === "pdf") {
                         return (
@@ -217,7 +224,10 @@ const Libraries = () => {
               showData.map((item) => {
                 if (item.type === "image") {
                   return (
-                    <div
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       key={item.url}
                       className="library rounded-[8px] border border-[#E4E7EC] p-[12px] flex flex-col gap-[16px]"
                     >
@@ -232,7 +242,7 @@ const Libraries = () => {
                       <span className="text-[12px] font-[400] text-[#505F75] leading-[15px] tracking-[-0.36px]">
                         {item.createdAt.split("T")[0]}
                       </span>
-                    </div>
+                    </a>
                   );
                 } else if (item.type === "pdf") {
                   return (
