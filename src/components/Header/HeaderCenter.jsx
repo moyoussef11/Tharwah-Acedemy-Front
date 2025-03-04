@@ -4,6 +4,7 @@ import icon2 from "../../assets/oui_training.png";
 import icon3 from "../../assets/Sidebar icons question.png";
 import icon4 from "../../assets/proicons_library.png";
 import { Link, useLocation } from "react-router-dom";
+import { DashboardOutlined } from "@ant-design/icons";
 
 const HeaderCenter = ({ toggle, setToggle }) => {
   const location = useLocation().pathname.split("/")[1];
@@ -30,7 +31,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
           <li className="p-[12px]">
             {" "}
             <Link className="flex items-center gap-1" to="/admin-dashboard">
-              <img src={icon2} alt="icons" />
+              <DashboardOutlined style={{ color: "#d1d8dd" }} />
               <span
                 className={`text-[#A3A8B5]  ${
                   location === "admin-dashboard"
@@ -140,7 +141,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               className="flex items-center gap-1"
               to="/admin-dashboard"
             >
-              <img src={icon2} alt="icons" />
+              <DashboardOutlined style={{ color: "#d1d8dd" }} />
               <span
                 className={`text-[#A3A8B5]  ${
                   location === "admin-dashboard"
