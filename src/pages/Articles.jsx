@@ -101,7 +101,7 @@ const ArticlesPage = () => {
               </Link>
               <div className="info flex items-center gap-[24px]">
                 <span className="text-[10px] text-[#143A53] font-normal leading-[13px] py-[4px] px-[6px] gap-[10px] rounded-[4px] bg-[#EEEAE8]">
-                  {articlesLatest[0].sub_CategoryId.name}
+                  {articlesLatest[0].sub_CategoryId?.name}
                 </span>
               </div>
             </div>
