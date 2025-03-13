@@ -189,7 +189,7 @@ const QuestionsPage = () => {
               <>
                 <div className="p-[16px] w-full bg-white border border-[#E4E7EC] rounded-[12px] flex flex-col gap-[20px]">
                   <p className="text-center text-gray-500 text-[18px] py-[20px]">
-                    لا توجد أسئلة متاحة لهذا التصنيف الفرعي.
+                    لا توجد أسئلة متاحة لهذا التصنيف الاساسي.
                   </p>
                 </div>
               </>

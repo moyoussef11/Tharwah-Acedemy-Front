@@ -20,7 +20,7 @@ const useArticles = () => {
   const [showSub, setShowSub] = useState(false);
   const [indexId, setIndexId] = useState(0);
   const [indexIdSubCat, setIndexIdSubCat] = useState(0);
-  const [catId, setCatId] = useState("");
+  const [catId, setCatId] = useState(0);
   const [subId, setSubId] = useState("");
   const searchRef = useRef(null);
 
@@ -36,13 +36,11 @@ const useArticles = () => {
   }
 
   const filteredDataArticlesNew = articles.filter(
-    (article) =>
-      article?.categoryId?._id === catId &&
-      article?.sub_CategoryId?._id === subId
+    (article) => article?.categoryId?._id === catId
   );
 
   const finalDataArticles =
-    filteredDataArticlesNew.length > 0 ? filteredDataArticlesNew : articles;
+    filteredDataArticlesNew.length > 0 ? filteredDataArticlesNew : [];
 
   useEffect(() => {
     if (!searchValueArticle) {
@@ -80,6 +78,13 @@ const useArticles = () => {
       setIndexIdSubCat(0);
     }
   }, [indexId]);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      setIndexId(0);
+      setCatId(categories[0]._id);
+    }
+  }, [categories]);
 
   return {
     searchValueArticle,

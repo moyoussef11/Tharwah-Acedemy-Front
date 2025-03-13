@@ -218,14 +218,20 @@ const ArticlesPage = () => {
           )}
           <div className="allArticles grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
             {articles && articles.length > 0 ? (
-              finalDataArticles.map((item, index) => (
-                <CardArticle
-                  key={index}
-                  image={item.image}
-                  title={item.title}
-                  id={item._id}
-                />
-              ))
+              finalDataArticles.length > 0 ? (
+                finalDataArticles.map((item, index) => (
+                  <CardArticle
+                    key={index}
+                    image={item.image}
+                    title={item.title}
+                    id={item._id}
+                  />
+                ))
+              ) : (
+                <div className="text-center col-span-full">
+                  لا توجد مقالات لهذا القسم
+                </div>
+              )
             ) : (
               <>
                 <Skeleton className="article flex flex-col gap-[16px] h-[150px] px-[120px] bg-[#fff] rounded-[8px] border border-[#E4E7EC] hover:-translate-y-1.5 duration-200" />

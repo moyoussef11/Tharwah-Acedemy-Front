@@ -75,12 +75,12 @@ const useQuestions = () => {
 
   const filteredQuestions = selectedSubCat
     ? questions.filter(
-        (question) => question.sub_CategoryId?._id === selectedSubCat
+        (question) => question.categoryId?._id === catId
       )
-    : questions;
+    : [];
 
   const dataQuestions =
-    filteredQuestions.length > 0 ? filteredQuestions : questions;
+    filteredQuestions.length > 0 ? filteredQuestions : [];
 
   useEffect(() => {
     if (catSlug) {
