@@ -4,7 +4,6 @@ import icon2 from "../../assets/oui_training.png";
 import icon3 from "../../assets/Sidebar icons question.png";
 import icon4 from "../../assets/proicons_library.png";
 import { Link, useLocation } from "react-router-dom";
-import { DashboardOutlined } from "@ant-design/icons";
 
 const HeaderCenter = ({ toggle, setToggle }) => {
   const location = useLocation().pathname.split("/")[1];
@@ -27,23 +26,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               </span>
             </Link>
           </li>
-          {/*  */}
-          <li className="p-[12px]">
-            {" "}
-            <Link className="flex items-center gap-1" to="/admin-dashboard">
-              <DashboardOutlined style={{ color: "#d1d8dd" }} />
-              <span
-                className={`text-[#A3A8B5]  ${
-                  location === "admin-dashboard"
-                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
-                    : ""
-                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
-              >
-                admin dashboard
-              </span>
-            </Link>
-          </li>
-          {/*  */}
+        
           <li className="p-[12px]">
             {" "}
             <Link className="flex items-center gap-1" to="/articles">
@@ -55,7 +38,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                جميع المقالات
+                 المقالات
               </span>
             </Link>
           </li>
@@ -69,7 +52,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                جميع الأسئلة
+                 الأسئلة
               </span>
             </Link>
           </li>
@@ -128,32 +111,12 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                جميع المقالات
+                 المقالات
               </span>
             </Link>
           </li>
 
-          {/*  */}
-          <li className="p-[12px]">
-            {" "}
-            <Link
-              onClick={() => setToggle(false)}
-              className="flex items-center gap-1"
-              to="/admin-dashboard"
-            >
-              <DashboardOutlined style={{ color: "#d1d8dd" }} />
-              <span
-                className={`text-[#A3A8B5]  ${
-                  location === "admin-dashboard"
-                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
-                    : ""
-                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
-              >
-                admin dashboard
-              </span>
-            </Link>
-          </li>
-          {/*  */}
+         
           <li className="p-[12px]">
             <Link
               onClick={() => setToggle(false)}
@@ -168,7 +131,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                جميع الأسئلة
+                 الأسئلة
               </span>
             </Link>
           </li>
