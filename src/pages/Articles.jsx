@@ -44,11 +44,11 @@ const ArticlesPage = () => {
                 placeholder={"ابحث عن المقالة هنا"}
                 onChange={(e) => setSearchValueArticle(e.target.value)}
               />
-              {/* <img
+              <img
                 src={iconSearch}
                 alt="iconSearch"
                 className="p-[12px] rounded-[8px] bg-[#FD9708] cursor-pointer"
-              /> */}
+              />
               {searchValueArticle && (
                 <div className="absolute top-full z-10 left-0 w-full bg-white border border-gray-300 rounded-lg mt-2 shadow-lg p-2">
                   {filteredDataArticles?.length > 0 ? (
