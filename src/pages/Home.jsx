@@ -189,7 +189,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* {mode === "questions" ? (
+      {mode === "questions" ? (
         <section
           id="categories_Questions"
           className="px-[20px] lg:px-[144px] my-[48px] md:my-0 rounded-[16px]"
@@ -247,7 +247,7 @@ export const Home = () => {
             )}
           </div>
         </section>
-      )} */}
+      )}
 
       {mode === "questions" ? (
         <section
