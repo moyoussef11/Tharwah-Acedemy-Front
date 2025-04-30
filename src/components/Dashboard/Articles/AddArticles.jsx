@@ -110,13 +110,17 @@ const AddArticles = () => {
       console.log(error);
     }
   }
+
   const options = tags.map((tag) => ({ value: tag._id, label: tag.name }));
   const optionsCategories = categories.map((item) => ({
     value: item._id,
     label: item.name,
   }));
 
-  const optionsSubCategories = sub_categories.map((item) => ({
+  const filterSubCategories = sub_categories.filter(
+    (sub) => sub.categoryId === categoryId
+  );
+  const optionsSubCategories = filterSubCategories.map((item) => ({
     value: item._id,
     label: item.name,
   }));
@@ -170,6 +174,7 @@ const AddArticles = () => {
               optionFilterProp="label"
               onChange={(e) => setSubCategoryId(e)}
               options={optionsSubCategories}
+              disabled={!categoryId ? true : false}
             />
           </div>
         </div>

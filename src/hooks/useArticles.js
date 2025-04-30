@@ -8,22 +8,34 @@ import {
   fetchArticlesLatest,
 } from "../rtk/features/articles/actGetArticles";
 import { fetchCategories } from "../rtk/features/categories/actGetCategories";
+import { fetchSubCategories } from "../rtk/features/subCategories/actGetSubCategories";
 
 const useArticles = () => {
   const dispatch = useDispatch();
+
   const articlesState = useSelector((state) => state.articles);
   const { articles, articlesLatest } = articlesState;
+
   const categoriesState = useSelector((state) => state.categories);
   const { categories } = categoriesState;
+
+  const subCategoryState = useSelector((state) => state.sub_category);
+  const { sub_categories } = subCategoryState;
+
   const [searchValueArticle, setSearchValueArticle] = useState("");
   const [filteredDataArticles, setFilteredDataArticles] = useState([]);
-  const [showSub, setShowSub] = useState(false);
-  const [indexId, setIndexId] = useState(0);
-  const [indexIdSubCat, setIndexIdSubCat] = useState(0);
-  const [catId, setCatId] = useState(0);
+
+  const [indexId, setIndexId] = useState(0); // لإبراز الكاتيجوري المختار
+  const [indexIdSubCat, setIndexIdSubCat] = useState(0); // لإبراز السب كاتيجوري المختار
+
+  const [catId, setCatId] = useState("");
   const [subId, setSubId] = useState("");
+
+  const [showSub, setShowSub] = useState(false);
+
   const searchRef = useRef(null);
 
+  // ✅ البحث عن المقالات بالاسم
   async function searchArticlesByName() {
     try {
       const res = await axios.get(
@@ -35,13 +47,14 @@ const useArticles = () => {
     }
   }
 
-  const filteredDataArticlesNew = articles.filter(
-    (article) => article?.categoryId?._id === catId
-  );
+  // ✅ فلترة المقالات حسب السب كاتيجوري
+  const filteredDataArticlesNew = subId
+    ? articles.filter((article) => article?.sub_CategoryId?._id === subId)
+    : [];
 
-  const finalDataArticles =
-    filteredDataArticlesNew.length > 0 ? filteredDataArticlesNew : [];
+  const finalDataArticles = filteredDataArticlesNew;
 
+  // ✅ التحكم في البحث
   useEffect(() => {
     if (!searchValueArticle) {
       setFilteredDataArticles([]);
@@ -55,12 +68,15 @@ const useArticles = () => {
     return () => clearTimeout(delaySearch);
   }, [searchValueArticle]);
 
+  // ✅ استدعاء البيانات الأساسية
   useEffect(() => {
     dispatch(fetchArticles());
     dispatch(fetchArticlesLatest());
     dispatch(fetchCategories());
+    dispatch(fetchSubCategories());
   }, [dispatch]);
 
+  // ✅ إخفاء نتيجة البحث عند الضغط خارج حقل البحث
   useEffect(() => {
     function handleHideResult(event) {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -69,16 +85,30 @@ const useArticles = () => {
     }
 
     window.addEventListener("mousedown", handleHideResult);
-
-    return () => removeEventListener("mousedown", handleHideResult);
+    return () => window.removeEventListener("mousedown", handleHideResult);
   }, []);
 
+  // ✅ عند تغيير الكاتيجوري، اختار أول سب كاتيجوري مرتبط به
   useEffect(() => {
-    if (indexId) {
-      setIndexIdSubCat(0);
-    }
-  }, [indexId]);
+    if (!catId || sub_categories.length === 0) return;
 
+    const relatedSubCategories = sub_categories.filter(
+      (sub) => sub.categoryId === catId
+    );
+
+    if (relatedSubCategories.length > 0) {
+      setSubId((prev) =>
+        prev && relatedSubCategories.some((sub) => sub._id === prev)
+          ? prev
+          : relatedSubCategories[0]._id
+      );
+      setIndexIdSubCat(0);
+    } else {
+      setSubId("");
+    }
+  }, [catId, sub_categories]);
+
+  // ✅ أول كاتيجوري تلقائيًا بعد تحميل الكاتيجوريز
   useEffect(() => {
     if (categories.length > 0) {
       setIndexId(0);
@@ -103,6 +133,8 @@ const useArticles = () => {
     articles,
     finalDataArticles,
     searchRef,
+    subId,
+    sub_categories,
   };
 };
 

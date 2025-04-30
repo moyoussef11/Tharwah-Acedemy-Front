@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import logo from "../../assets/Group 1000001855.png";
 
 const HeaderLeft = () => {
   return (
-    <div>
+    <Link to={"/"}>
       <img src={logo} alt="logo" />
-    </div>
+    </Link>
   );
 };
 

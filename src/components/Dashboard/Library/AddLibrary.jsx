@@ -6,12 +6,15 @@ import {
 
 import { Button, Input, message, Upload, Select } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASEURL, LIBRARY, UPLOAD } from "../../../utils/api";
 import Cookies from "universal-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLibrary } from "../../../rtk/features/library/actGetLibrary";
 import { useNavigate } from "react-router-dom";
+import { fetchTags } from "../../../rtk/features/tag/actGetTags";
+import { fetchCategories } from "../../../rtk/features/categories/actGetCategories";
+import { fetchSubCategories } from "../../../rtk/features/subCategories/actGetSubCategories";
 const { Dragger } = Upload;
 
 const AddLibrary = () => {
@@ -23,6 +26,17 @@ const AddLibrary = () => {
   const token = cookies.get("token");
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const tagsState = useSelector((state) => state.tags);
+  const categoriesState = useSelector((state) => state.categories);
+  const subCategoriesState = useSelector((state) => state.sub_category);
+  const { tags } = tagsState;
+  const { categories } = categoriesState;
+  const { sub_categories } = subCategoriesState;
+  const [categoryId, setCategoryId] = useState("");
+
+  const [subCategoryId, setSubCategoryId] = useState("");
+
+  const [tagsSelected, setTagsSelected] = useState([]);
 
   async function submit(e) {
     e.preventDefault();
@@ -31,10 +45,10 @@ const AddLibrary = () => {
       setLoading(false);
       return message.error("please enter title library");
     }
-     if (!type) {
-       setLoading(false);
-       return message.error("please enter type library");
-     }
+    if (!type) {
+      setLoading(false);
+      return message.error("please enter type library");
+    }
     if (!file) {
       setLoading(false);
       return message.error(
@@ -64,6 +78,27 @@ const AddLibrary = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    dispatch(fetchTags());
+    dispatch(fetchCategories());
+    dispatch(fetchSubCategories());
+  }, [dispatch]);
+
+  const options = tags.map((tag) => ({ value: tag._id, label: tag.name }));
+  const optionsCategories = categories.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
+
+  const filterSubCategories = sub_categories.filter(
+    (sub) => sub.categoryId === categoryId
+  );
+
+  const optionsSubCategories = filterSubCategories.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
 
   return (
     <div>
@@ -141,6 +176,43 @@ const AddLibrary = () => {
               Only images, PDFs, and videos are allowed.
             </p>
           </Dragger>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label htmlFor="tags"> tags</label>
+          <Select
+            id="tags"
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder="Tags Mode"
+            onChange={(value) => setTagsSelected(value)}
+            options={options}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {" "}
+          <div className="flex flex-col gap-3">
+            <label htmlFor="category">الفئة الاساسية</label>
+            <Select
+              id="category"
+              placeholder="الفئة الاساسية"
+              optionFilterProp="label"
+              onChange={(e) => setCategoryId(e)}
+              options={optionsCategories}
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="subCategory">الفئة الفرعية</label>
+            <Select
+              id="subCategory"
+              placeholder="الفئة الفرعية"
+              optionFilterProp="label"
+              onChange={(e) => setSubCategoryId(e)}
+              options={optionsSubCategories}
+              disabled={!categoryId ? true : false}
+            />
+          </div>
         </div>
 
         <div className="my-5">

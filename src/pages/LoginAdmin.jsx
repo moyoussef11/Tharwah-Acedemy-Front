@@ -25,6 +25,7 @@ const LoginAdmin = () => {
       const res = await axios.post(url, { email, password });
       if (res.status === 200) {
         cookies.set("token", res.data.token);
+        
         window.localStorage.setItem("token", res.data.token);
         nav("/admin-dashboard");
       }
