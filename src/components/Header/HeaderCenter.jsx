@@ -4,9 +4,41 @@ import icon2 from "../../assets/oui_training.png";
 import icon3 from "../../assets/Sidebar icons question.png";
 import icon4 from "../../assets/proicons_library.png";
 import { Link, useLocation } from "react-router-dom";
-
+import { DownOutlined } from "@ant-design/icons";
+import { Dropdown, Skeleton, Space } from "antd";
+import { useSelector } from "react-redux";
 const HeaderCenter = ({ toggle, setToggle }) => {
   const location = useLocation().pathname.split("/")[1];
+
+  const categoryState = useSelector((state) => state.categories);
+  const { categories } = categoryState;
+
+  const items = [
+    {
+      key: "1",
+      label: (
+        <div className="categories grid grid-cols-1 gap-[5px]">
+          {categories && categories.length > 0 ? (
+            categories.map((item) => (
+              <div
+                key={item._id}
+                className={`cursor-pointer py-[12px] pr-[20px] pl-[12px] rounded-[14px] border border-[#EEEAE8] flex items-center gap-[14px]`}
+              >
+                <img
+                  src={item.image}
+                  className="w-[15px] h-[15px] object-contain"
+                  alt="icon"
+                />
+                <span>{item.name}</span>
+              </div>
+            ))
+          ) : (
+            <Skeleton />
+          )}
+        </div>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -26,22 +58,28 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               </span>
             </Link>
           </li>
-        
+
           <li className="p-[12px]">
             {" "}
             <Link className="flex items-center gap-1" to="/articles">
               <img src={icon2} alt="icons" />
-              <span
-                className={`text-[#A3A8B5]  ${
-                  location === "articles"
-                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
-                    : ""
-                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
-              >
-                 المقالات
-              </span>
+              <Dropdown menu={{ items }}>
+                <Space>
+                  <span
+                    className={`text-[#A3A8B5]  ${
+                      location === "articles"
+                        ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
+                        : ""
+                    } hover:text-[#FFFFFF] duration-200 py-[12px]`}
+                  >
+                    الخدمات
+                  </span>
+                  <DownOutlined className="!text-[#FFFFFF]" />
+                </Space>
+              </Dropdown>
             </Link>
           </li>
+
           <li className="p-[12px]">
             <Link className="flex items-center gap-1" to="/questions">
               <img src={icon3} alt="icons" />
@@ -52,7 +90,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                 الأسئلة
+                الأسئلة
               </span>
             </Link>
           </li>
@@ -104,19 +142,23 @@ const HeaderCenter = ({ toggle, setToggle }) => {
               to="/articles"
             >
               <img src={icon2} alt="icons" />
-              <span
-                className={`text-[#A3A8B5]  ${
-                  location === "articles"
-                    ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
-                    : ""
-                } hover:text-[#FFFFFF] duration-200 py-[12px]`}
-              >
-                 المقالات
-              </span>
+              <Dropdown menu={{ items }}>
+                <Space>
+                  <span
+                    className={`text-[#A3A8B5]  ${
+                      location === "articles"
+                        ? "text-[#FFFFFF] border-b-2 border-[#FD9708]"
+                        : ""
+                    } hover:text-[#FFFFFF] duration-200 py-[12px]`}
+                  >
+                    الخدمات
+                  </span>
+                  <DownOutlined className="!text-[#FFFFFF]" />
+                </Space>
+              </Dropdown>
             </Link>
           </li>
 
-         
           <li className="p-[12px]">
             <Link
               onClick={() => setToggle(false)}
@@ -131,7 +173,7 @@ const HeaderCenter = ({ toggle, setToggle }) => {
                     : ""
                 } hover:text-[#FFFFFF] duration-200 py-[12px]`}
               >
-                 الأسئلة
+                الأسئلة
               </span>
             </Link>
           </li>

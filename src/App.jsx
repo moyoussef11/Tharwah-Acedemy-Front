@@ -23,6 +23,7 @@ import Libraries from "./pages/Libraries";
 import ArticleDetalis from "./pages/ArticleDetalis";
 import Error404 from "./pages/Error404";
 import AddQuestion from "./components/Dashboard/Questions/AddQuestion";
+import Login from "./pages/Login";
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/questions" element={<QuestionsPage />} />
         <Route path="/articles" element={<ArticlesPage />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/articles/article-details/:id"
           element={<ArticleDetalis />}

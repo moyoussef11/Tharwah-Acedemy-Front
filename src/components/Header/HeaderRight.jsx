@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import icon5 from "../../assets/si_add-duotone.png";
-import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
+import { MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { message, Modal } from "antd";
 import check from "../../assets/check-circle.svg";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BASEURL, QUESTIONS } from "../../utils/api";
+import { Link } from "react-router-dom";
 const HeaderRight = ({ toggle, setToggle }) => {
   const categoryState = useSelector((state) => state.categories);
   const { categories } = categoryState;
@@ -16,6 +17,13 @@ const HeaderRight = ({ toggle, setToggle }) => {
   const [allow, setAllow] = useState(false);
   const [question, setQuestion] = useState("");
   const [category, setCategory] = useState("");
+  const subCategoriesState = useSelector((state) => state.sub_category);
+  const { sub_categories } = subCategoriesState;
+  const [subCat, setSubCat] = useState([]);
+  const [subCatID, setSubCatID] = useState("");
+
+  const showSubCat = subCat?.filter((sub) => sub.categoryId === category);
+
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -62,6 +70,13 @@ const HeaderRight = ({ toggle, setToggle }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (sub_categories) {
+      setSubCat(sub_categories);
+    }
+  }, [sub_categories]);
+
   return (
     <>
       <div>
@@ -73,6 +88,16 @@ const HeaderRight = ({ toggle, setToggle }) => {
           <span> إضافة سؤال جديد</span>
         </button>
       </div>
+
+      {/* sign up */}
+      {/* <div>
+        <Link
+          to="/login"
+          className="text-center leading-[19.2px] text-[#FFFFFF] flex items-center justify-center p-2 gap-2 md:py-[12px] md:px-[16px] cursor-pointer rounded-[8px] bg-[#FD9708]"
+        >
+          <UserOutlined /> <span>تسجيل الدخول </span>
+        </Link>
+      </div> */}
       <div className="z-20 md:hidden">
         {!toggle ? (
           <MenuOutlined
@@ -148,6 +173,24 @@ const HeaderRight = ({ toggle, setToggle }) => {
                 ) : (
                   <Skeleton />
                 )}
+              </div>
+            </div>
+            <div className="flex flex-col my-3 gap-4">
+              <h5 className="text-[#143A53]"> اختر الفئة الفرعية </h5>
+              <div className="categories grid grid-cols-2 md:grid-cols-3 gap-[14px]">
+                {showSubCat && showSubCat.length > 0
+                  ? showSubCat.map((item) => (
+                      <div
+                        onClick={() => setSubCatID(item._id)}
+                        key={item._id}
+                        className={`cursor-pointer py-[12px] pr-[20px] pl-[12px] rounded-[14px] border border-[#EEEAE8] ${
+                          subCatID === item._id ? "border-[#fd9708]" : ""
+                        } flex items-center gap-[14px]`}
+                      >
+                        <span>{item.name}</span>
+                      </div>
+                    ))
+                  : ""}
               </div>
             </div>
             <div dir="ltr" className="flex items-center gap-3 mt-10">

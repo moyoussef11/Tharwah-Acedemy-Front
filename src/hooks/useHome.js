@@ -12,13 +12,14 @@ import {
   fetchArticles,
   fetchArticlesLatest,
 } from "../rtk/features/articles/actGetArticles";
+import { fetchSubCategories } from "../rtk/features/subCategories/actGetSubCategories";
 
 const useHome = () => {
   const dispatch = useDispatch();
   const questionsState = useSelector((state) => state.questions);
   const articlesState = useSelector((state) => state.articles);
   const categoryState = useSelector((state) => state.categories);
-
+  const subCategoriesState = useSelector((state) => state.sub_category);
   // حالات التحميل
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [loadingArticles, setLoadingArticles] = useState(true);
@@ -114,6 +115,7 @@ const useHome = () => {
       dispatch(fetchQuestions()).finally(() => setLoadingQuestions(false)),
       dispatch(fetchQuestionsLatest()),
       dispatch(fetchCategories()).finally(() => setLoadingCategories(false)),
+      dispatch(fetchSubCategories()),
       dispatch(fetchArticles()).finally(() => setLoadingArticles(false)),
       dispatch(fetchArticlesLatest()),
     ]);
