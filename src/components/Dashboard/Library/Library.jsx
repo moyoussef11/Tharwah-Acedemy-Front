@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Space, Table } from "antd";
+import { Space, Table, Tag } from "antd";
 import EditModels from "../../Model/EditModels";
 import DeleteModels from "../../Model/DeleteModels";
 import EditLibrary from "./EditLibrary";
@@ -25,7 +25,29 @@ const Library = () => {
       sorter: (a, b) => a.title?.length - b.title?.length,
       sortDirections: ["descend"],
     },
-
+    {
+      title: "القسم الرئيسي",
+      dataIndex: "categoryId",
+      key: "categoryId",
+      render: (category) =>
+        typeof category === "object" ? category?.name : "غير متوفر",
+    },
+    {
+      title: "القسم الفرعي",
+      dataIndex: "sub_CategoryId",
+      key: "sub_CategoryId",
+      render: (subCategory) =>
+        typeof subCategory === "object" ? subCategory?.name : "غير متوفر",
+    },
+    {
+      title: "التاجات",
+      dataIndex: "tags",
+      key: "tags",
+      render: (tags) =>
+        Array.isArray(tags) && tags.length > 0
+          ? tags.map((tag, index) => <Tag key={index}>{tag.name || tag}</Tag>)
+          : "لا توجد تاجات",
+    },
     {
       title: "الملف",
       dataIndex: "url",

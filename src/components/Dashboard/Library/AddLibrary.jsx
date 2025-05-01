@@ -55,10 +55,25 @@ const AddLibrary = () => {
         "please provide (file docs or pdfs or video or images) library"
       );
     }
+    if (!categoryId) {
+      setLoading(false);
+      return message.error("please enter categoryId library");
+    }
+    if (!subCategoryId) {
+      setLoading(false);
+      return message.error("please enter subCategoryId library");
+    }
+    if (!tagsSelected) {
+      setLoading(false);
+      return message.error("please enter tagsSelected library");
+    }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("type", type);
     formData.append("file", file.originFileObj);
+    formData.append("categoryId", categoryId);
+    formData.append("sub_CategoryId", subCategoryId);
+    formData.append("tags", JSON.stringify(tagsSelected));
     try {
       const res = await axios.post(
         `${BASEURL}/${LIBRARY}/${UPLOAD}`,
@@ -76,6 +91,7 @@ const AddLibrary = () => {
       nav("/admin-dashboard/library");
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 

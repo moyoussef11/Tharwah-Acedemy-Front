@@ -7,7 +7,10 @@ import CardCategoryByClassName from "../components/Cards/CardCategoryByClassName
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { fetchCategories, fetchCategory } from "../rtk/features/categories/actGetCategories";
+import {
+  fetchCategories,
+  fetchCategory,
+} from "../rtk/features/categories/actGetCategories";
 import { fetchSubCategories } from "../rtk/features/subCategories/actGetSubCategories";
 import { fetchLibrary } from "../rtk/features/library/actGetLibrary";
 
@@ -47,68 +50,64 @@ const Libraries = () => {
 
   const [selectedSubCat, setSelectedSubCat] = useState("");
 
-
- useEffect(() => {
+  useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchSubCategories());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCatSlug(categories[0]?.slug);
+      setCatId(categories[0]?._id);
+    }
+    if (sub_categories.length > 0) {
+      setSubCat(sub_categories);
+      setSelectedSubCat(sub_categories[0]?._id);
+    }
+  }, [categories, subCat, sub_categories]);
+
+  async function getCat() {
+    const res = await dispatch(fetchCategory({ slug: catSlug }));
+    setCategory(res.payload.category);
+  }
 
   useEffect(() => {
-      if (categories.length > 0) {
-        setCatSlug(categories[0]?.slug);
-        setCatId(categories[0]?._id);
-      }
-      if (sub_categories.length > 0) {
-        setSubCat(sub_categories);
-        setSelectedSubCat(sub_categories[0]?._id);
-      }
-    }, [categories, subCat, sub_categories]);
-  
-    async function getCat() {
-      const res = await dispatch(fetchCategory({ slug: catSlug }));
-      setCategory(res.payload.category);
-    }
-  
-    useEffect(() => {
-      if (!catId || sub_categories.length === 0) return;
-  
-      const relatedSubCategories = sub_categories.filter(
-        (sub) => sub.categoryId === catId
-      );
-  
-      if (relatedSubCategories.length > 0) {
-        setSelectedSubCat((prev) =>
-          prev && relatedSubCategories.some((sub) => sub._id === prev)
-            ? prev
-            : relatedSubCategories[0]._id
-        );
-      } else {
-        setSelectedSubCat("");
-      }
-    }, [catId, sub_categories]);
-  
-    const filteredQuestions = selectedSubCat
-      ? library.filter(
-          (question) => question.sub_CategoryId?._id === selectedSubCat
-        )
-      : [];
-  
-  
-    const dataQuestions = filteredQuestions.length > 0 ? filteredQuestions : [];
-  
-    useEffect(() => {
-      if (catSlug) {
-        getCat();
-      }
-    }, [catSlug]);
-  
-    useEffect(() => {
-      if (catId) {
-        dispatch(fetchLibrary());
-      }
-    }, [dispatch, catId, selectedSubCat]);
+    if (!catId || sub_categories.length === 0) return;
 
+    const relatedSubCategories = sub_categories.filter(
+      (sub) => sub.categoryId === catId
+    );
+
+    if (relatedSubCategories.length > 0) {
+      setSelectedSubCat((prev) =>
+        prev && relatedSubCategories.some((sub) => sub._id === prev)
+          ? prev
+          : relatedSubCategories[0]._id
+      );
+    } else {
+      setSelectedSubCat("");
+    }
+  }, [catId, sub_categories]);
+
+  const filteredQuestions = selectedSubCat
+    ? library.filter(
+        (question) => question.sub_CategoryId?._id === selectedSubCat
+      )
+    : [];
+
+  const dataQuestions = filteredQuestions.length > 0 ? filteredQuestions : [];
+
+  useEffect(() => {
+    if (catSlug) {
+      getCat();
+    }
+  }, [catSlug]);
+
+  useEffect(() => {
+    if (catId) {
+      dispatch(fetchLibrary());
+    }
+  }, [dispatch, catId, selectedSubCat]);
 
   return (
     <>
@@ -262,48 +261,6 @@ const Libraries = () => {
             </div>
           </form>
         </div>
-        <div className="filters my-[32px] ">
-          <div className="flex items-center flex-wrap gap-[8px]">
-            {options.map((option) => (
-              <div
-                key={option.id}
-                className="flex w-fit items-center gap-2 bg-white rounded-[8px] border border-[#D9DAE0] py-2 px-3 cursor-pointer"
-                onClick={() => setSelected(option.id)}
-              >
-                {/* ✅ Hidden Input */}
-                <input type="radio" name="filter" className="hidden" />
-                {/* ✅ Custom Checkbox */}
-                <div
-                  className={`h-5 w-5 flex items-center justify-center rounded border-2 transition-all ${
-                    selected === option.id
-                      ? "bg-[#FD9708] border-[#FD9708]"
-                      : "border-[#D9DAE0]"
-                  }`}
-                >
-                  {selected === option.id && (
-                    <svg
-                      className="w-4 h-4 text-white"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M5 13l4 4L19 7"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </div>
-                {/* ✅ Label */}
-                <label className="text-sm font-medium text-[#143A53] cursor-pointer">
-                  {option.label}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
 
         <div className="categories my-[32px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[20px]">
           {categories ? (
@@ -415,11 +372,11 @@ const Libraries = () => {
           <div className="library w-full bg-white flex flex-col gap-[20px] rounded-[12px] border border-[#E4E7EC] p-[16px]">
             <h2 className="text-[#0C111D] font-medium text-[20px] leading-[25px]">
               {" "}
-              ({showData?.length}) الجميع
+              ({dataQuestions?.length}) الجميع
             </h2>
             <div className="libraries grid gap-[20px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
               {library && library?.length > 0 ? (
-                showData.map((item) => {
+                dataQuestions.map((item) => {
                   if (item.type === "image") {
                     return (
                       <a
