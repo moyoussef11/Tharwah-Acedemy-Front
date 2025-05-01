@@ -1,5 +1,5 @@
-// const BASEURL = "https://tharwahnp-acedemy.vercel.app";
-const BASEURL = "http://localhost:2025";
+const BASEURL = "https://tharwahnp-acedemy.vercel.app";
+// const BASEURL = "http://localhost:2025";
 const AUTH = "auth";
 const LOGIN = "login";
 const REGISTER = "register";
