@@ -48,7 +48,7 @@ const useHome = () => {
   async function searchQuestionByName() {
     try {
       const res = await axios.get(
-        `${BASEURL}/${QUESTIONS}/searchQuestionByName/${searchValue}`
+        `${BASEURL}/${QUESTIONS}/searchQuestionByTag/${searchValue}`
       );
       setFilteredData(res.data.questions);
     } catch (error) {
@@ -59,7 +59,7 @@ const useHome = () => {
   async function searchArticlesByName() {
     try {
       const res = await axios.get(
-        `${BASEURL}/${ARTICLES}/searchArticleByName/${searchValueArticle}`
+        `${BASEURL}/${ARTICLES}/searchArticleByTag/${searchValueArticle}`
       );
       setFilteredDataArticles(res.data.articles);
     } catch (error) {

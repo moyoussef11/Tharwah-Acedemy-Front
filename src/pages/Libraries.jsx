@@ -20,34 +20,19 @@ const Libraries = () => {
     setSearchValue,
     filteredData,
     library,
-    showData,
-    options,
-    setSelected,
-    selected,
     searchRef,
     // categories,
   } = useLibrary();
-
   const dispatch = useDispatch();
-
   const categoryState = useSelector((state) => state.categories);
-
   const subCategoryState = useSelector((state) => state.sub_category);
-
   const [showSub, setShowSub] = useState(false);
-
   const { categories } = categoryState;
-
   const [catId, setCatId] = useState("");
-
   const [catSlug, setCatSlug] = useState("");
-
   const [category, setCategory] = useState({});
-
   const { sub_categories } = subCategoryState;
-
   const [subCat, setSubCat] = useState([]);
-
   const [selectedSubCat, setSelectedSubCat] = useState("");
 
   useEffect(() => {
@@ -253,7 +238,7 @@ const Libraries = () => {
                     })
                   ) : (
                     <p className="text-center py-2 text-[#143A53]">
-                      لا توجد نتائج
+                      لا توجد نتائج بهذا التاج
                     </p>
                   )}
                 </div>

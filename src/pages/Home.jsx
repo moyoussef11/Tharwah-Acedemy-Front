@@ -137,7 +137,7 @@ export const Home = () => {
                         />
                       ) : (
                         <p className="text-center py-2 text-[#143A53]">
-                          لا توجد نتائج
+                          لا توجد نتائج بهذا التاج
                         </p>
                       )}
                     </div>
@@ -177,7 +177,7 @@ export const Home = () => {
                         ))
                       ) : (
                         <p className="text-center py-2 text-[#143A53]">
-                          لا توجد نتائج
+                          لا توجد نتائج بهذا التاج
                         </p>
                       )}
                     </div>

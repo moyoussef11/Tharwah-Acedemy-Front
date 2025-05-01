@@ -17,13 +17,16 @@ const useLibrary = () => {
   async function searchQuestionByName() {
     try {
       const res = await axios.get(
-        `${BASEURL}/${LIBRARY}/searchLibraryByName/${searchValue}`
+        `${BASEURL}/${LIBRARY}/searchLibraryByTag/${searchValue}`
       );
       setFilteredData(res.data.library);
     } catch (error) {
       message.error(error?.message);
     }
   }
+
+  console.log(filteredData);
+  
 
   useEffect(() => {
     if (!searchValue) {
