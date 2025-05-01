@@ -1,14 +1,24 @@
 import PropTypes from "prop-types";
 import icon5 from "../../assets/si_add-duotone.png";
-import { MenuOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  UserOutlined,
+  PicCenterOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { message, Modal } from "antd";
+import { message, Select, Input, Modal, Tooltip } from "antd";
 import check from "../../assets/check-circle.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { BASEURL, QUESTIONS } from "../../utils/api";
 import { Link } from "react-router-dom";
+import { fetchTags } from "../../rtk/features/tag/actGetTags";
+import { fetchCategories } from "../../rtk/features/categories/actGetCategories";
+import { fetchSubCategories } from "../../rtk/features/subCategories/actGetSubCategories";
+import Cookies from "universal-cookie";
 const HeaderRight = ({ toggle, setToggle }) => {
   const categoryState = useSelector((state) => state.categories);
   const { categories } = categoryState;
@@ -16,40 +26,52 @@ const HeaderRight = ({ toggle, setToggle }) => {
   const [checkModel, setCheckModel] = useState(false);
   const [allow, setAllow] = useState(false);
   const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const [category, setCategory] = useState("");
   const subCategoriesState = useSelector((state) => state.sub_category);
   const { sub_categories } = subCategoriesState;
   const [subCat, setSubCat] = useState([]);
   const [subCatID, setSubCatID] = useState("");
-
+  const dispatch = useDispatch();
   const showSubCat = subCat?.filter((sub) => sub.categoryId === category);
-
-
+  const token = localStorage.getItem("token");
+  const tagsState = useSelector((state) => state.tags);
+  const { tags } = tagsState;
+  const [tagsSelected, setTagsSelected] = useState([]);
   const handleOpenModal = () => {
     setOpen(true);
   };
 
   useEffect(() => {
-    if (question && category) {
+    if (question && answer && category && subCatID && tagsSelected) {
       setAllow(true);
     } else {
       setAllow(false);
     }
-  }, [question, category]);
+  }, [question, answer, subCatID, tagsSelected, category]);
 
   async function sendQuestion(e) {
     e.preventDefault();
     if (!question) {
       return message.error("please enter your question");
     }
+    if (!answer) {
+      return message.error("please enter your answer");
+    }
+    if (!tagsSelected) {
+      return message.error("please enter your tags");
+    }
     if (!category) {
       return message.error("please enter your category");
     }
     try {
-      const res = await axios.post(
-        `${BASEURL}/${QUESTIONS}/send-new-question`,
-        { question, categoryId: category }
-      );
+      const res = await axios.post(`${BASEURL}/request-add-question`, {
+        question,
+        answer,
+        sub_CategoryId: subCatID,
+        categoryId: category,
+        tags: tagsSelected,
+      });
       if (res.data.status === "Success") {
         setCheckModel(true);
       }
@@ -72,32 +94,60 @@ const HeaderRight = ({ toggle, setToggle }) => {
   }, []);
 
   useEffect(() => {
+    dispatch(fetchTags());
+    dispatch(fetchCategories());
+    dispatch(fetchSubCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (sub_categories) {
       setSubCat(sub_categories);
     }
   }, [sub_categories]);
 
+  const options = tags.map((tag) => ({ value: tag._id, label: tag.name }));
+  const cookies = new Cookies();
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    cookies.remove("user");
+    cookies.remove("token");
+    window.location.reload();
+  }
+
   return (
     <>
-      <div>
-        <button
-          onClick={handleOpenModal}
-          className="text-center leading-[19.2px] text-[#FFFFFF] flex items-center justify-center p-2 gap-2 md:py-[12px] md:px-[16px] cursor-pointer rounded-[8px] bg-[#FD9708]"
-        >
-          <img src={icon5} alt="icon" />
-          <span> إضافة سؤال جديد</span>
-        </button>
-      </div>
+      {token ? (
+        <>
+          <div className="flex items-center gap-4 md:gap-6">
+            <button
+              onClick={handleOpenModal}
+              className="text-center leading-[19.2px] text-[#FFFFFF] flex items-center justify-center p-2 gap-2 md:py-[12px] md:px-[16px] cursor-pointer rounded-[8px] bg-[#FD9708]"
+            >
+              <img src={icon5} alt="icon" />
+              <span> إضافة سؤال جديد</span>
+            </button>
+            <Tooltip className="cursor-pointer" title="تسجيل الخروج">
+              <LogoutOutlined
+                onClick={handleLogout}
+                className="!text-red-500 text-[20px]"
+              />
+            </Tooltip>
+          </div>
+        </>
+      ) : (
+        <div>
+          <Link
+            to="/login"
+            className="text-center leading-[19.2px] text-[#FFFFFF] flex items-center justify-center p-2 gap-2 md:py-[12px] md:px-[16px] cursor-pointer rounded-[8px] bg-[#FD9708]"
+          >
+            <UserOutlined /> <span>تسجيل الدخول </span>
+          </Link>
+        </div>
+      )}
 
       {/* sign up */}
-      {/* <div>
-        <Link
-          to="/login"
-          className="text-center leading-[19.2px] text-[#FFFFFF] flex items-center justify-center p-2 gap-2 md:py-[12px] md:px-[16px] cursor-pointer rounded-[8px] bg-[#FD9708]"
-        >
-          <UserOutlined /> <span>تسجيل الدخول </span>
-        </Link>
-      </div> */}
+
       <div className="z-20 md:hidden">
         {!toggle ? (
           <MenuOutlined
@@ -132,6 +182,9 @@ const HeaderRight = ({ toggle, setToggle }) => {
           setOpen(false);
           setQuestion("");
           setCategory("");
+          setAnswer("");
+          setTagsSelected([]);
+          setQuestion("");
         }}
         footer={null}
       >
@@ -148,6 +201,18 @@ const HeaderRight = ({ toggle, setToggle }) => {
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="اكتب سوالك"
                 className="py-[10px] px-[14px] rounded-[8px] border border-[#BDC0C9]"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="answer">الاجابة</label>
+              <Input
+                id="answer"
+                size="large"
+                value={answer}
+                placeholder="الاجابة"
+                prefix={<PicCenterOutlined />}
+                onChange={(e) => setAnswer(e.target.value)}
+                name="answer"
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -193,6 +258,19 @@ const HeaderRight = ({ toggle, setToggle }) => {
                   : ""}
               </div>
             </div>
+            <div className="flex flex-col gap-3">
+              <label htmlFor="tags"> tags</label>
+              <Select
+                id="tags"
+                mode="tags"
+                style={{ width: "100%" }}
+                placeholder="Tags Mode"
+                onChange={(value) => setTagsSelected(value)}
+                options={options}
+                value={tagsSelected}
+              />
+            </div>
+
             <div dir="ltr" className="flex items-center gap-3 mt-10">
               <button
                 type="submit"
@@ -210,6 +288,8 @@ const HeaderRight = ({ toggle, setToggle }) => {
                   setOpen(false);
                   setQuestion("");
                   setCategory("");
+                  setAnswer("");
+                  setTagsSelected([]);
                 }}
                 className="rounded-[8px] cursor-pointer border border-[#D9DAE0] flex items-center gap-[8px] py-[10px] px-[12px]"
               >

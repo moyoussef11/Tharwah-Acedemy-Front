@@ -24,6 +24,9 @@ import ArticleDetalis from "./pages/ArticleDetalis";
 import Error404 from "./pages/Error404";
 import AddQuestion from "./components/Dashboard/Questions/AddQuestion";
 import Login from "./pages/Login";
+import AddUser from "./components/Dashboard/Users/AddUser";
+import Users from "./components/Dashboard/Users/Users";
+import RequestsQuestions from "./components/Dashboard/Questions/RequestsQuestions";
 
 function App() {
   const location = useLocation();
@@ -59,8 +62,14 @@ function App() {
           <Route path="/admin-dashboard" element={<Dashboard />}>
             <Route path="articles" element={<Articles />} />
             <Route path="articles/add-article" element={<AddArticles />} />
+            <Route path="users" element={<Users />} />
+            <Route path="users/add-user" element={<AddUser />} />
             <Route path="questions" element={<Questions />} />
             <Route path="questions/add-questions" element={<AddQuestion />} />
+            <Route
+              path="questions/request-questions"
+              element={<RequestsQuestions />}
+            />
             <Route path="library" element={<Library />} />
             <Route path="library/add-library" element={<AddLibrary />} />
             <Route path="categories" element={<Categories />} />

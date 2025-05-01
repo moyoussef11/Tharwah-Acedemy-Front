@@ -27,6 +27,7 @@ const LoginAdmin = () => {
         cookies.set("token", res.data.token);
         
         window.localStorage.setItem("token", res.data.token);
+        window.localStorage.setItem("user", JSON.stringify(res.data.user));
         nav("/admin-dashboard");
       }
     } catch (error) {

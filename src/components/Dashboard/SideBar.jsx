@@ -12,6 +12,9 @@ import {
   CreditCardTwoTone,
   TagFilled,
   TagsTwoTone,
+  UserOutlined,
+  UserAddOutlined,
+  PullRequestOutlined,
 } from "@ant-design/icons";
 import logo from "../../assets/Logo.png";
 import { Link } from "react-router-dom";
@@ -23,6 +26,25 @@ const SideBar = ({ collapsed }) => {
       key: "0",
       icon: <HomeOutlined />,
       label: <Link to="/admin-dashboard"> الصفحة الرئسية</Link>,
+    },
+    {
+      key: "users",
+      icon: <UserOutlined />,
+      label: "المستخدمين",
+      children: [
+        {
+          key: "all-users",
+          icon: <UserOutlined />,
+          label: <Link to="/admin-dashboard/users">جميع المستخدمين</Link>,
+        },
+        {
+          key: "add-user",
+          icon: <UserAddOutlined />,
+          label: (
+            <Link to="/admin-dashboard/users/add-user">إضافة مستخدم جديد</Link>
+          ),
+        },
+      ],
     },
     {
       key: "articles",
@@ -61,6 +83,15 @@ const SideBar = ({ collapsed }) => {
           label: (
             <Link to="/admin-dashboard/questions/add-questions">
               إضافة سؤال جديد
+            </Link>
+          ),
+        },
+        {
+          key: "request-questions",
+          icon: <PullRequestOutlined />,
+          label: (
+            <Link to="/admin-dashboard/questions/request-questions">
+              جميع طلبات الاسئلة
             </Link>
           ),
         },

@@ -1,8 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/LogoLog.svg";
 import heroImg from "../assets/logoT.png";
-import { Input } from "antd";
+import { Input, message } from "antd";
+import { useState } from "react";
+import axios from "axios";
+import { AUTH, BASEURL, LOGIN } from "../utils/api";
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const nav = useNavigate();
+
+  async function submit(e) {
+    e.preventDefault();
+    if (!email || !password) {
+      return message.error("Please fill in all fields");
+    }
+    try {
+      const res = await axios.post(`${BASEURL}/${AUTH}/${LOGIN}`, {
+        email,
+        password,
+      });
+      if (res.status === 200) {
+        window.localStorage.setItem("token", res.data.token);
+        window.localStorage.setItem("user", JSON.stringify(res.data.user));
+      }
+      if (res.data.user.role === "admin") {
+        nav("/admin-dashboard");
+      } else {
+        nav("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div
       dir="ltr"
@@ -29,18 +60,21 @@ const Login = () => {
             Welcome back! Please enter your details.
           </p>
 
-          <form>
+          <form onSubmit={submit}>
             <input
               type="email"
               autoComplete="email"
-              placeholder="mazhar.shf@gmail.com"
+              placeholder="mohamed.you@gmail.com"
+              required
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <div className="relative mb-4">
               <Input.Password
                 autoComplete="current-password"
                 className="!px-4 !py-2 !mb-4"
-                placeholder="input password"
+                placeholder="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 

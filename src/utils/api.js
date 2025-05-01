@@ -2,6 +2,7 @@
 const BASEURL = "http://localhost:2025";
 const AUTH = "auth";
 const LOGIN = "login";
+const REGISTER = "register";
 const CATEGORIES = "categories";
 const SUB_CATEGORIES = "sub-category";
 const LIBRARY = "library";
@@ -14,6 +15,7 @@ const LATEST = "latest";
 export {
   BASEURL,
   AUTH,
+  REGISTER,
   LOGIN,
   CATEGORIES,
   SUB_CATEGORIES,

@@ -15,6 +15,19 @@ export const fetchQuestions = createAsyncThunk(
   }
 );
 
+export const fetchQuestionsRequests = createAsyncThunk(
+  "questions/fetchQuestionsRequests",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${BASEURL}/request-add-question`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error(thunkAPI.rejectWithValue());
+    }
+  }
+);
+
 export const fetchQuestion = createAsyncThunk(
   "question/fetchQuestion",
   async (id, thunkAPI) => {

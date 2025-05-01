@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import IndexDashboard from "./Index";
 import SideBar from "./SideBar";
 import HeaderDash from "./Header";
 
 const LayoutAdminDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const nav = useNavigate();
+  const isAdmin = user.role === "admin" ? true : false;
+
+  useEffect(() => {
+    if (!isAdmin) {
+      nav("/");
+    }
+  }, [isAdmin]);
 
   return (
     <Layout>
